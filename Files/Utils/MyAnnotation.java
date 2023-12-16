@@ -21,7 +21,23 @@ public class MyAnnotation extends Component {
                         try {
                             field.setAccessible(true);
                             String childName = ((FindInChild) annotation).value();
-                            SpatialObject child = object.findChildObject(childName);
+                            
+                            String[] childs = childName.split("/");
+                            
+                            SpatialObject child;
+                            
+                            if(childs.length > 1) {
+                                child = object;
+                                
+                                for(String currentChildName: childs) {
+                                    child = child.findChildObject(currentChildName);
+                                }
+                            }
+                            
+                            else {
+                                child = object.findChildObject(childName);
+                            }
+                            
                             field.set(component, child);
                         }
                         
